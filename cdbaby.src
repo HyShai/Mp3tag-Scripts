@@ -1,1 +1,0 @@
-https://query.yahooapis.com/v1/public/yql?q=use%20'https%3A%2F%2Fcdn.rawgit.com%2FHyShai%2Fmp3tag_scripts%2Fmaster%2Fcdbaby.search.xml'%20as%20cdbaby%3B%20select%20*%20from%20cdbaby%20where%20query%20%3D%20'adele'%3B&format=json

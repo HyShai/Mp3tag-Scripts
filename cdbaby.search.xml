@@ -21,7 +21,7 @@
       var respObj = y.tidy(myRequest);
       var xdata = y.xpath(respObj, "//a[contains(@id,'cphContent_ucAlbumPager_rptAlbums_albumImage') and contains(@id, 'hlAlbum')]");
       //var foo = xdata.map(function(e){return e});
-      y.log(y.xmlToJson(xdata));
+      //y.log(y.xmlToJson(xdata));
       response.object = <data>{xdata}</data>;
     ]]>
     </execute>

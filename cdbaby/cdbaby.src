@@ -32,7 +32,7 @@ json "ON"
   json_select_object "results"
   json_select_object "data"
 	json_foreach "a"
-	 json_select "id"
+	 json_select "href"
 	 SayRest
 	 say "|"
 	 json_select "href"

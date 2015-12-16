@@ -1,1 +1,81 @@
-https://query.yahooapis.com/v1/public/yql?q=use%20'https%3A%2F%2Fcdn.rawgit.com%2FHyShai%2Fmp3tag_scripts%2Fmaster%2Fcdbaby%2Fcdbaby.search.xml'%20as%20cdbaby%3B%20select%20*%20from%20cdbaby%20where%20query%20%3D%20'adele'%3B&format=json
+# Mp3tag parsing for CDBaby (v2.36 and higher)
+#
+# Web source created and maintained by hyshai
+#  Last modified 2015-12-15
+#
+#
+# Save it in your Mp3tag data directory, i.e.
+# C:\Documents and Settings\*username*\Application Data\Mp3tag\data\sources
+#
+#
+#
+[Name]=cdbaby
+[BasedOn]=http://cdbaby.com
+[IndexUrl]=http://query.yahooapis.com/v1/public/yql?q=use%20'https%3A%2F%2Fcdn.rawgit.com%2FHyShai%2Fmp3tag_scripts%2Fmaster%2Fcdbaby%2Fcdbaby.search.xml'%20as%20cdbaby%3B%20select%20*%20from%20cdbaby%20where%20query%20%3D%20'%s'%3B&format=json
+[AlbumUrl]=http://cdbaby.com
+[WordSeparator]=%20
+[IndexFormat]=%_preview%|%_url%|%Info%
+[SearchBy]=%artist% %album%
+
+[ParserScriptIndex]=...
+# ###################################################################
+# This script parses the webpage for all releases
+# by this albumname.
+#
+# The output format is defined by IndexFormat above, which
+# is used by the selection dialog
+# ###################################################################
+#Debug "on" "C:\Users\*username*\AppData\Roaming\Mp3tag\data\debug.out"
+json "ON"
+  json_select_object "query"
+  json_select_object "results"
+  json_select_object "data"
+	json_foreach "a"
+	 json_select "id"
+	 SayRest
+	 say "|"
+	 json_select "href"
+	 SayRest
+	 say "|"
+	 json_select "title"
+	 replace "|" " - "
+	 SayRest
+ 	 saynewline
+ json_foreach_end
+ 
+[ParserScriptAlbum]=...
+# ###################################################################
+# This script parses the albums page for all common information.
+#
+# The current output variable is set via the outputto command
+# All these fields are used by the confirm online information dialog
+# ###################################################################
+findline "cphContent_lblAlbumName"
+findinline "title=\""
+outputto "ARTIST"
+sayuntil " |"
+findinline " | "
+outputto "ALBUM"
+sayuntil "\""
+findline "cphContent_imgAlbum"
+findinline "src=\""
+outputto "COVERURL"
+say "http:"
+sayuntil "\""
+findline "track-table"
+do
+	findline "cphContent_rptTrack_metaTrackTitle"
+	findinline "content=\""
+	outputto "TRACKS"
+	sayuntil "\""
+	say "|"
+	findline "cphContent_rptTrack_lblTrackTime"
+	findinline ">"
+	outputto "_LENGTH"
+	sayuntil "</"
+	say "|"
+	findline "</tr"
+	moveline 1
+	findline "<"
+	findinline "<"
+while "tr"

@@ -6,7 +6,7 @@
 # Save it in your Mp3tag data directory, i.e.
 # C:\Documents and Settings\*username*\Application Data\Mp3tag\data\sources
 #
-# vim: set ft=python:
+#
 #
 [Name]=MostlyMusic.com
 [BasedOn]=http://MostlyMusic.com
@@ -47,13 +47,16 @@ json_select_object "data"
 # The current output variable is set via the outputto command
 # All these fields are used by the confirm online information dialog
 # ###################################################################
-
-findline "<img src=\"//cdn.shopify.com/s" 3
-findinline "data-cloudzoom=\"zoomImage: '"
+debug "on" "C:\Users\SCL\AppData\Roaming\Mp3tag\data\debug.out"
+#findline "<img src=\"//cdn.shopify.com/s" 3
+findline "<div class=\"gallery-cell\" data-thumb=\""
+#findinline "data-cloudzoom=\"zoomImage: '"
+findinline "data-thumb=\""
 outputto "COVERURL"
 say "http:"
-SayUntil "'"
+SayUntil "?"
 FindLine "<h1"
+FindInLine "<h1"
 FindInLine ">"
 outputto "ARTIST"
 SayUntil " -"
@@ -61,16 +64,18 @@ FindInLine " - "
 outputto "ALBUM"
 SayUntil "<"
 findline "<h3>Sample Tracks</h3>"
+#findline "<h3>Download Single Track for $0.99</h3>"
 do
 	findline "<div style=\"width:500px;\">"
+	#findline "<div class=\"ui360\">"
 	findline "<a href=\""
 	findinline ">"
 	outputto "TRACKS"
-	sayregexp "(?<=\d - ).+(?= \()"
-	say "|"
+	sayregexp "(?<=\d - )[^<]+(?= \()" "|"
+	#say "|"
 	outputto "_LENGTH"
-	sayregexp "(?<=\()\d+?:\d+"
-	Say "|"
+	sayregexp "(?<=\()\d+?:\d+" "|"
+	#Say "|"
 	findline "</div>" 3
 	moveline 1
 	findline "<"

@@ -15,6 +15,7 @@
 [WordSeparator]=%20
 [IndexFormat]=%_preview%|%_url%|%Info%
 [SearchBy]=%artist% %album%
+[UserAgent]=1
 
 [ParserScriptIndex]=...
 # ###################################################################
